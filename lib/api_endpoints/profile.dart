@@ -17,16 +17,19 @@ class APIProfile {
     String summonerPuuid = '';
 
     try {
-      var response =
-          await getAPI('summoners/by-name/$username', server: server);
+      var response = await getAPI('summoner/v4/summoners/by-name/$username',
+          server: server);
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
+        print(body);
         summonerId = body['id'];
         summonerLevel = body['summonerLevel'];
         summonerAccountId = body['accountId'];
         summonerPuuid = body['puuid'];
         profileIconId = body['profileIconId'];
       } else {
+        var status = response.statusCode;
+        print("there was an error $status");
         isError = true;
         return;
       }
@@ -34,5 +37,14 @@ class APIProfile {
       isError = true;
       return;
     }
+  }
+
+  String getProfileIconId() {
+    print(profileIconId);
+    return profileIconId.toString();
+  }
+
+  String getSummonerLevel() {
+    return summonerLevel.toString();
   }
 }
