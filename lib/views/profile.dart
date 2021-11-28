@@ -30,6 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
   String iconURL = "";
   String username = "";
   String summonerLevel = "";
+  String soloIconURL = "assets/Emblem_Unranked.png";
+  String soloRanking = "";
+  String soloLPs = "";
+  String soloWinLooses = "";
+  String flexIconURL = "assets/Emblem_Unranked.png";
+  String flexRanking = "";
+  String flexLPs = "";
+  String flexWinLooses = "";
 
   @override
   void initState() {
@@ -45,15 +53,240 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(
       () {
         iconURL =
-            'http://ddragon.leagueoflegends.com/cdn/10.13.1/img/profileicon/' +
+            'http://ddragon.leagueoflegends.com/cdn/11.23.1/img/profileicon/' +
                 apiProfile.getProfileIconId() +
                 '.png';
         username = widget.username;
         summonerLevel = apiProfile.getSummonerLevel();
+        soloRanking = apiProfile.getSoloRanking();
+        flexRanking = apiProfile.getFlexRanking();
+        soloLPs = apiProfile.getSoloLP();
+        flexLPs = apiProfile.getFlexLP();
+        soloWinLooses = apiProfile.getSoloWinLoose();
+        flexWinLooses = apiProfile.getFlexWinLoose();
+        soloIconURL = apiProfile.getSoloRankingPicture();
+        flexIconURL = apiProfile.getFlexRankingPicture();
         isLoading = false;
       },
     );
     print("iconURL == $iconURL");
+  }
+
+  Widget queuesInformations() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+              ),
+            ),
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 5,
+              bottom: 5,
+            ),
+            height: MediaQuery.of(context).size.height * 0.13,
+            width: MediaQuery.of(context).size.width * 0.68,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          soloIconURL,
+                          width: 50,
+                          height: 50,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 10,
+                          ),
+                        ),
+                        const Text(
+                          "Solo Ranked Match",
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 55,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          soloRanking,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 90,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          soloLPs,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 125,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          soloWinLooses,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(
+              left: 15,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+              ),
+            ),
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 5,
+              bottom: 5,
+            ),
+            height: MediaQuery.of(context).size.height * 0.13,
+            width: MediaQuery.of(context).size.width * 0.68,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          flexIconURL,
+                          width: 50,
+                          height: 50,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 10,
+                          ),
+                        ),
+                        const Text(
+                          "Flex 5:5 Rank",
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 55,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          flexRanking,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 90,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          flexLPs,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            top: 125,
+                            left: 60,
+                          ),
+                        ),
+                        Text(
+                          flexWinLooses,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -149,6 +382,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
+                  queuesInformations(),
                 ],
               ),
       ),

@@ -66,6 +66,18 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
+  assets:
+    - assets/Emblem_Bronze.png
+    - assets/Emblem_Challenger.png
+    - assets/Emblem_Diamond.png
+    - assets/Emblem_Gold.png
+    - assets/Emblem_GrandMaster.png
+    - assets/Emblem_Iron.png
+    - assets/Emblem_Master.png
+    - assets/Emblem_Platinum.png
+    - assets/Emblem_Silver.png
+    - assets/Emblem_Unranked.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
