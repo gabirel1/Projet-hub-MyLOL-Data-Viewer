@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_op_gg/api_endpoints/mainscreen.dart';
 import 'package:my_op_gg/views/profile.dart';
 
 void main() {
@@ -42,10 +43,26 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController searchTextController = TextEditingController();
   var region = "euw1";
   List history = ["test1", "test2"];
+  MaterialColor euwStatus = Colors.red;
+  MaterialColor naStatus = Colors.red;
+  MaterialColor euneStatus = Colors.red;
+  MaterialColor koreaStatus = Colors.red;
 
   @override
   void initState() {
     super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    MainScreenAPI api = MainScreenAPI();
+    await api.fetch();
+    setState(() {
+      euwStatus = api.getColorEUW();
+      naStatus = api.getColorNA();
+      euneStatus = api.getColorEUNE();
+      koreaStatus = api.getColorKR();
+    });
   }
 
   Widget historyList() {
@@ -149,6 +166,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Icons.search,
                             ),
                             onPressed: () async {
+                              if (searchTextController.text.isEmpty == true) {
+                                return;
+                              }
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -168,8 +188,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               Icons.clear,
                             ),
                             onPressed: () {
-                              var test = searchTextController.text;
-                              print("test == $test");
                               searchTextController.clear();
                             },
                           ),
@@ -196,7 +214,115 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Center(
               child: historyList(),
-            )
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: MediaQuery.of(context).size.height * 0.08,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.01,
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: MediaQuery.of(context).size.height * 0.05,
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 35,
+                    ),
+                  ),
+                  const Text(
+                    "EUW",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 5,
+                    ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: euwStatus,
+                    radius: 5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                  ),
+                  const Text(
+                    "NA",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 5,
+                    ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: naStatus,
+                    radius: 5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                  ),
+                  const Text(
+                    "EUNE",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 5,
+                    ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: euneStatus,
+                    radius: 5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                  ),
+                  const Text(
+                    "KR",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 5,
+                    ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: koreaStatus,
+                    radius: 5,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
