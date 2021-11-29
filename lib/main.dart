@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_op_gg/api_endpoints/mainscreen.dart';
 import 'package:my_op_gg/views/profile.dart';
@@ -47,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   MaterialColor naStatus = Colors.red;
   MaterialColor euneStatus = Colors.red;
   MaterialColor koreaStatus = Colors.red;
+  List<String> championsIconsURL = [];
+  List<Widget> ChampionsIcons = [];
 
   @override
   void initState() {
@@ -62,7 +65,43 @@ class _MyHomePageState extends State<MyHomePage> {
       naStatus = api.getColorNA();
       euneStatus = api.getColorEUNE();
       koreaStatus = api.getColorKR();
+      championsIconsURL = api.getChampionsIconsURL();
     });
+    print("championsIconsURL == $championsIconsURL");
+    for (int i = 0; i < championsIconsURL.length; i++) {
+      ChampionsIcons.add(
+        CachedNetworkImage(
+          imageUrl: championsIconsURL[i],
+          imageBuilder: (
+            context,
+            imageProvider,
+          ) =>
+              Container(
+            width: MediaQuery.of(context).size.width * 0.125,
+            height: MediaQuery.of(context).size.height * 0.125,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          placeholder: (
+            context,
+            url,
+          ) =>
+              const CircularProgressIndicator(),
+          errorWidget: (
+            context,
+            url,
+            error,
+          ) =>
+              const Icon(
+            Icons.error,
+          ),
+        ),
+      );
+    }
   }
 
   Widget historyList() {
@@ -127,6 +166,28 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget championRotation() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.85,
+      height: MediaQuery.of(context).size.height * 0.08,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            ...ChampionsIcons,
+          ],
+        ),
       ),
     );
   }
@@ -215,17 +276,24 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: historyList(),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.85,
-              height: MediaQuery.of(context).size.height * 0.08,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(5),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.01,
               ),
             ),
+            const Text(
+              "Champion's Rotation",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.01,
+              ),
+            ),
+            championRotation(),
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.01,
