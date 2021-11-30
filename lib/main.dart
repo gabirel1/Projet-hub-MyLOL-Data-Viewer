@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   MaterialColor koreaStatus = Colors.red;
   List<String> championsIconsURL = [];
   List<Widget> ChampionsIcons = [];
+  var dropdownValue = "EUW";
 
   @override
   void initState() {
@@ -138,8 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       left: 5,
                     ),
                     height: MediaQuery.of(context).size.height * 0.07,
-                    // width: MediaQuery.of(context).size.width * 0.8,
-                    // color: Colors.grey[300],
                     decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -211,51 +210,100 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Center(
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.80,
-                      child: TextField(
-                        // cursorColor: Colors.white,
-                        controller: searchTextController,
-                        decoration: InputDecoration(
-                          prefixIcon: IconButton(
-                            color: Colors.grey,
-                            icon: const Icon(
-                              Icons.search,
-                            ),
-                            onPressed: () async {
-                              if (searchTextController.text.isEmpty == true) {
-                                return;
-                              }
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfilePage(
-                                    username: searchTextController.text,
-                                    server: region,
-                                  ),
-                                ),
-                              );
-                              history.add(searchTextController.text);
-                              searchTextController.clear();
-                            },
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.10,
                           ),
-                          suffixIcon: IconButton(
-                            color: Colors.grey,
-                            icon: const Icon(
-                              Icons.clear,
-                            ),
-                            onPressed: () {
-                              searchTextController.clear();
-                            },
-                          ),
-                          hintText: 'Search...',
-                          border: InputBorder.none,
                         ),
-                      ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.62,
+                          child: TextField(
+                            // cursorColor: Colors.white,
+                            controller: searchTextController,
+                            decoration: InputDecoration(
+                              prefixIcon: IconButton(
+                                color: Colors.grey,
+                                icon: const Icon(
+                                  Icons.search,
+                                ),
+                                onPressed: () async {
+                                  if (searchTextController.text.isEmpty ==
+                                      true) {
+                                    return;
+                                  }
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfilePage(
+                                        username: searchTextController.text,
+                                        server: region,
+                                      ),
+                                    ),
+                                  );
+                                  history.add(searchTextController.text);
+                                  searchTextController.clear();
+                                },
+                              ),
+                              suffixIcon: IconButton(
+                                color: Colors.grey,
+                                icon: const Icon(
+                                  Icons.clear,
+                                ),
+                                onPressed: () {
+                                  searchTextController.clear();
+                                },
+                              ),
+                              hintText: 'Search...',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 10,
+                          ),
+                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            padding: const EdgeInsets.only(
+                              left: 5,
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                value: region,
+                                items: <String>['euw1', 'eun1', 'na1', 'kr']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (obj) {
+                                  print("obj == $obj");
+                                  setState(() {
+                                    region = obj.toString();
+                                  });
+                                },
+                                borderRadius: BorderRadius.circular(5),
+                                underline: SizedBox(),
+                              ),
+                            )),
+                      ],
                     ),
                   ],
                 ),
