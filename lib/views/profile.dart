@@ -38,6 +38,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String flexRanking = "";
   String flexLPs = "";
   String flexWinLooses = "";
+  List<dynamic> championsInformations = [];
+  List<Widget> championsMasteriesWidgets = [];
 
   @override
   void initState() {
@@ -66,10 +68,99 @@ class _ProfilePageState extends State<ProfilePage> {
         flexWinLooses = apiProfile.getFlexWinLoose();
         soloIconURL = apiProfile.getSoloRankingPicture();
         flexIconURL = apiProfile.getFlexRankingPicture();
+        championsInformations = apiProfile.getChampionsInformations();
+        buildChampionMasteriesWidget();
         isLoading = false;
       },
     );
     print("iconURL == $iconURL");
+  }
+
+  void buildChampionMasteriesWidget() {
+    for (int i = 0; i < championsInformations.length; i++) {
+      championsMasteriesWidgets.add(
+        Container(
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl:
+                    "https://ddragon.leagueoflegends.com/cdn/11.23.1/img/champion/${championsInformations[i]['name']}.png",
+                imageBuilder: (context, imageProvider) => Container(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.064,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                placeholder: (
+                  context,
+                  url,
+                ) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (
+                  context,
+                  url,
+                  error,
+                ) =>
+                    const Icon(
+                  Icons.error,
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 32,
+                    left: 20,
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(
+                        Radius.elliptical(
+                          5,
+                          5,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      championsInformations[i]['level'].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget championsMasteries() {
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.47,
+        height: MediaQuery.of(context).size.height * 0.07,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              ...championsMasteriesWidgets,
+            ],
+          ),
+        ));
   }
 
   Widget queuesInformations() {
@@ -379,6 +470,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 20,
                           ),
                         ),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 20,
+                          ),
+                        ),
+                        championsMasteries(),
                       ],
                     ),
                   ),

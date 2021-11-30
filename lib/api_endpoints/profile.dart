@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
-
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:my_op_gg/utils/api_utils.dart';
 
@@ -10,6 +10,7 @@ class APIProfile {
   var summonerLevel = 0;
   var soloInformations;
   var flexInformations;
+  List<dynamic> championsInformations = [];
   // var
 
   APIProfile();
@@ -44,14 +45,12 @@ class APIProfile {
         } else if (body != null && body[0]["queueType"] == "RANKED_FLEX_SR") {
           flexInformations = body[0];
         }
-        if (body != null &&
-            body[0] != null &&
-            body[1]["queueType"] == "RANKED_SOLO_5x5") {
-          soloInformations = body[1];
-        } else if (body != null &&
-            body[0] != null &&
-            body[1]["queueType"] == "RANKED_FLEX_SR") {
-          flexInformations = body[1];
+        if (body != null && body.length > 1) {
+          if (body[1]["queueType"] == "RANKED_SOLO_5x5") {
+            soloInformations = body[1];
+          } else if (body[1]["queueType"] == "RANKED_FLEX_SR") {
+            flexInformations = body[1];
+          }
         }
       } else {
         var status = response2.statusCode;
@@ -59,7 +58,35 @@ class APIProfile {
         isError = true;
         return;
       }
+      print("hello i'm here");
+      var response3 = await getAPI(
+          "champion-mastery/v4/champion-masteries/by-summoner/$summonerId",
+          server: server);
+      if (response3.statusCode == 200) {
+        var _championsMasteries = jsonDecode(response3.body);
+        var response4 = await http.get(Uri.parse(
+            "https://ddragon.leagueoflegends.com/cdn/11.23.1/data/en_US/champion.json"));
+        if (response4.statusCode == 200) {
+          var body2 = jsonDecode(response4.body);
+          Map<String, dynamic> champions = body2['data'];
+          for (int i = 0; i < _championsMasteries.length; i++) {
+            for (int j = 0; j < champions.keys.length; j++) {
+              if (champions[champions.keys.elementAt(j)]['key'].toString() ==
+                  _championsMasteries[i]['championId'].toString()) {
+                var name = champions[champions.keys.elementAt(j)]['id'];
+                championsInformations.add({
+                  "name": name,
+                  "level": _championsMasteries[i]['championLevel'],
+                });
+                break;
+              }
+            }
+          }
+        }
+      }
+      print("championsInformations == $championsInformations");
     } catch (e) {
+      print("error == $e");
       isError = true;
       return;
     }
@@ -172,5 +199,9 @@ class APIProfile {
       default:
         return 'assets/Emblem_Unranked.png';
     }
+  }
+
+  List<dynamic> getChampionsInformations() {
+    return championsInformations;
   }
 }

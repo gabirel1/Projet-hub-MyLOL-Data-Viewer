@@ -68,7 +68,7 @@ class MainScreenAPI {
               if (champions[champions.keys.elementAt(j)]['key'].toString() ==
                   championsIds[i].toString()) {
                 championsNames
-                    .add(champions[champions.keys.elementAt(j)]['name']);
+                    .add(champions[champions.keys.elementAt(j)]['id']);
                 break;
               }
             }
@@ -102,7 +102,7 @@ class MainScreenAPI {
 
     for (int i = 0; i < championsNames.length; i++) {
       championsIconsURL.add(
-          "https://ddragon.leagueoflegends.com/cdn/11.23.1/img/champion/${championsNames[i].replaceAll(' ', '').replaceAll("'", '')}.png");
+          "https://ddragon.leagueoflegends.com/cdn/11.23.1/img/champion/${championsNames[i]}.png");
     }
     return championsIconsURL;
   }
