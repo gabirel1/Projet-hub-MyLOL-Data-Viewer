@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_op_gg/api_endpoints/mainscreen.dart';
+import 'package:my_op_gg/views/flex_leaderboard.dart';
 import 'package:my_op_gg/views/profile.dart';
+import 'package:my_op_gg/views/solo_leaderboard.dart';
+import 'package:my_op_gg/views/tft_leaderboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -438,6 +441,74 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.06,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Icon that opens profile page when clicked
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SoloLeaderBoard(),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.poll_outlined,
+                        color: Colors.black,
+                      ),
+                      Text("Solo LeaderBoard"),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FlexLeaderBoard(),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.poll_outlined,
+                        color: Colors.black,
+                      ),
+                      Text("Flex LeaderBoard"),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TftLeaderBoard(),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.poll_outlined,
+                        color: Colors.black,
+                      ),
+                      Text("Tft LeaderBoard"),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
