@@ -391,7 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(top: 2.0),
         child: (isLoading ||
                 iconURL ==
-                    "http://ddragon.leagueoflegends.com/cdn/10.13.1/img/profileicon/0.png")
+                    "http://ddragon.leagueoflegends.com/cdn/11.23.1/img/profileicon/0.png")
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
