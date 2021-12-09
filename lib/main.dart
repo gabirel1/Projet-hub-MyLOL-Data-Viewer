@@ -477,7 +477,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FlexLeaderBoard(),
+                        builder: (context) => FlexLeaderBoard(
+                          server: region,
+                        ),
                       ),
                     );
                   },
@@ -496,7 +498,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TftLeaderBoard(),
+                        builder: (context) => TftLeaderBoard(
+                          server: region,
+                        ),
                       ),
                     );
                   },

@@ -35,16 +35,6 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
     loadData();
   }
 
-/*   Widget boardWidget(var object) {
-    return Container(
-      child: Column(
-        children: [
-
-        ],
-      ),
-    );
-  } */
-
   void loadData() async {
     APISoloLeaderboard apiSoloLeaderboard = APISoloLeaderboard();
 
@@ -56,14 +46,59 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
         isLoading = false;
       },
     );
-    for (int j = 0; j < _soloLeaderBoard.length; j++) {
-      print(_soloLeaderBoard[j]);
-    }
+    // for (int j = 0; j < _soloLeaderBoard.length; j++) {
+    //   print(_soloLeaderBoard[j]);
+    // }
     for (int i = 0; i < _soloLeaderBoard.length; i++) {
       _soloLeaderBoardWidgets.add(
         Container(
-          child: Column(
+          child: Row(
             children: [
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+              ),
+              (i == 0)
+                  ? const Text(
+                      "1",
+                      style: TextStyle(
+                        color: Colors.amber,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : (i == 1)
+                      ? const Text(
+                          "2",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : (i == 2)
+                          ? const Text(
+                              "3",
+                              style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : Text(
+                              "${i + 1}",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+              ),
               Stack(
                 children: [
                   CachedNetworkImage(
@@ -74,8 +109,8 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
                       imageProvider,
                     ) =>
                         Container(
-                      width: 80.0,
-                      height: 110.0,
+                      width: 60.0,
+                      height: 90.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
@@ -100,9 +135,9 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 80,
-                      left: 30,
-                      right: 40,
+                      top: 60,
+                      left: 20,
+                      // right: 20,
                     ),
                     child: Container(
                       decoration: const BoxDecoration(
@@ -118,22 +153,35 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
                         _soloLeaderBoard[i]['summonerLevel'].toString(),
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 10,
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
                 ),
-                child: Text(
-                  _soloLeaderBoard[i]['summonerName'],
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
+              ),
+              Text(
+                _soloLeaderBoard[i]['summonerName'],
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                _soloLeaderBoard[i]['leaguePoints'].toString() + " LP",
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  right: 10,
                 ),
               ),
             ],
@@ -152,37 +200,30 @@ class _SoloLeaderBoardState extends State<SoloLeaderBoard> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 2.0),
-        child: Center(
-          child: (isLoading)
-              ? const CircularProgressIndicator()
-              : Column(
-                  children: [
-                    const Text(
-                      "Solo Leaderboard",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: (isLoading)
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  const Text(
+                    "Solo Leaderboard",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _soloLeaderBoardWidgets.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _soloLeaderBoardWidgets[index];
+                      },
                     ),
-                    // Expanded(
-                    //   child: ListView(
-                    //     children: _soloLeaderBoardWidgets,
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _soloLeaderBoardWidgets.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _soloLeaderBoardWidgets[index];
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-        ),
+                  ),
+                ],
+              ),
       ),
     );
   }
