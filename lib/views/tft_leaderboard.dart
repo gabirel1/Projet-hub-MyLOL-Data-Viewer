@@ -103,7 +103,7 @@ class _TftLeaderBoardState extends State<TftLeaderBoard> {
                 children: [
                   CachedNetworkImage(
                     imageUrl:
-                        "http://ddragon.leagueoflegends.com/cdn/11.23.1/img/profileicon/${_tftLeaderBoard[i]['icon']}.png",
+                        "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${_tftLeaderBoard[i]['icon']}.png",
                     imageBuilder: (
                       context,
                       imageProvider,

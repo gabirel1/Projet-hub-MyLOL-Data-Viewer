@@ -11,6 +11,7 @@ class APIProfile {
   var soloInformations;
   var flexInformations;
   List<dynamic> championsInformations = [];
+  List<dynamic> gamesInformations = [];
   // var
 
   APIProfile();
@@ -58,14 +59,13 @@ class APIProfile {
         isError = true;
         return;
       }
-      print("hello i'm here");
       var response3 = await getAPI(
           "champion-mastery/v4/champion-masteries/by-summoner/$summonerId",
           server: server);
       if (response3.statusCode == 200) {
         var _championsMasteries = jsonDecode(response3.body);
         var response4 = await http.get(Uri.parse(
-            "https://ddragon.leagueoflegends.com/cdn/11.23.1/data/en_US/champion.json"));
+            "https://ddragon.leagueoflegends.com/cdn/11.24.1/data/en_US/champion.json"));
         if (response4.statusCode == 200) {
           var body2 = jsonDecode(response4.body);
           Map<String, dynamic> champions = body2['data'];
@@ -84,7 +84,52 @@ class APIProfile {
           }
         }
       }
-      print("championsInformations == $championsInformations");
+      var response5 = await getAPIMatchs(
+          "match/v5/matches/by-puuid/$summonerPuuid/ids?start=0&count=10",
+          server: server);
+      if (response5.statusCode == 200) {
+        var matches = jsonDecode(response5.body);
+        for (int i = 0; i < matches.length; i++) {
+          var response6 = await getAPIMatchs("match/v5/matches/${matches[i]}",
+              server: server);
+          if (response6.statusCode == 200) {
+            var body = jsonDecode(response6.body);
+
+            var userGameInformations;
+            for (int j = 0; j < body['info']['participants'].length; j++) {
+              if (body['info']['participants'][j]['puuid'] == summonerPuuid) {
+                userGameInformations = {
+                  "assists": body['info']['participants'][j]['assists'],
+                  "deaths": body['info']['participants'][j]['deaths'],
+                  "kills": body['info']['participants'][j]['kills'],
+                  "championName": body['info']['participants'][j]
+                      ['championName'],
+                  "championId": body['info']['participants'][j]['championId'],
+                  "item0": body['info']['participants'][j]['item0'],
+                  "item1": body['info']['participants'][j]['item1'],
+                  "item2": body['info']['participants'][j]['item2'],
+                  "item3": body['info']['participants'][j]['item3'],
+                  "item4": body['info']['participants'][j]['item4'],
+                  "item5": body['info']['participants'][j]['item5'],
+                  "item6": body['info']['participants'][j]['item6'],
+                  "win": body['info']['participants'][j]['win'],
+                  "summoner1Id": body['info']['participants'][j]['summoner1Id'],
+                  "summoner2Id": body['info']['participants'][j]['summoner2Id'],
+                };
+                break;
+              }
+            }
+            gamesInformations.add({
+              "gameId": body['gameId'],
+              "matchId": body['metadata']['matchId'],
+              "gameDuration": body['info']['gameDuration'],
+              "gameCreation": body['info']['gameCreation'],
+              "gameMode": body['info']['gameMode'],
+              "userGameInformations": userGameInformations,
+            });
+          }
+        }
+      }
     } catch (e) {
       print("error == $e");
       isError = true;
@@ -203,5 +248,12 @@ class APIProfile {
 
   List<dynamic> getChampionsInformations() {
     return championsInformations;
+  }
+
+  List<dynamic> getGamesInformations() {
+    for (int i = 0; i < gamesInformations.length; i++) {
+      print("gamesInformations[$i] == ${gamesInformations[i]}");
+    }
+    return gamesInformations;
   }
 }

@@ -59,7 +59,7 @@ class MainScreenAPI {
         var body = json.decode(response5.body);
         championsIds = body['freeChampionIds'];
         var response6 = await http.get(Uri.parse(
-            "https://ddragon.leagueoflegends.com/cdn/11.23.1/data/en_US/champion.json"));
+            "https://ddragon.leagueoflegends.com/cdn/11.24.1/data/en_US/champion.json"));
         if (response6.statusCode == 200) {
           var body = json.decode(response6.body);
           Map<String, dynamic> champions = body['data'];
@@ -102,7 +102,7 @@ class MainScreenAPI {
 
     for (int i = 0; i < championsNames.length; i++) {
       championsIconsURL.add(
-          "https://ddragon.leagueoflegends.com/cdn/11.23.1/img/champion/${championsNames[i]}.png");
+          "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${championsNames[i]}.png");
     }
     return championsIconsURL;
   }

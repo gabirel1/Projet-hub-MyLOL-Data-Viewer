@@ -40,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String flexWinLooses = "";
   List<dynamic> championsInformations = [];
   List<Widget> championsMasteriesWidgets = [];
+  List<dynamic> lastGames = [];
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(
       () {
         iconURL =
-            'http://ddragon.leagueoflegends.com/cdn/11.23.1/img/profileicon/' +
+            'http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/' +
                 apiProfile.getProfileIconId() +
                 '.png';
         username = widget.username;
@@ -69,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
         soloIconURL = apiProfile.getSoloRankingPicture();
         flexIconURL = apiProfile.getFlexRankingPicture();
         championsInformations = apiProfile.getChampionsInformations();
+        lastGames = apiProfile.getGamesInformations();
         buildChampionMasteriesWidget();
         isLoading = false;
       },
@@ -84,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               CachedNetworkImage(
                 imageUrl:
-                    "https://ddragon.leagueoflegends.com/cdn/11.23.1/img/champion/${championsInformations[i]['name']}.png",
+                    "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${championsInformations[i]['name']}.png",
                 imageBuilder: (context, imageProvider) => Container(
                   width: MediaQuery.of(context).size.width * 0.1,
                   height: MediaQuery.of(context).size.height * 0.064,
@@ -391,7 +393,7 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(top: 2.0),
         child: (isLoading ||
                 iconURL ==
-                    "http://ddragon.leagueoflegends.com/cdn/11.23.1/img/profileicon/0.png")
+                    "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/0.png")
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
