@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_op_gg/api_endpoints/profile.dart';
+import 'package:my_op_gg/views/detailed_game_infos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var isLoading = true;
@@ -172,7 +173,15 @@ class _ProfilePageState extends State<ProfilePage> {
     for (int i = 0; i < lastGames.length; i++) {
       lastGamesWidgets.add(
         InkWell(
-          onTap: () => print("${lastGames[i]}"),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedGameInfo(
+                matchId: lastGames[i]['matchId'],
+                server: widget.server,
+              ),
+            ),
+          ),
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
