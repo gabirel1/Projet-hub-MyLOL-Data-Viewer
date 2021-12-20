@@ -171,166 +171,172 @@ class _ProfilePageState extends State<ProfilePage> {
   void buildLastGamesWidget() {
     for (int i = 0; i < lastGames.length; i++) {
       lastGamesWidgets.add(
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey,
-              width: 0.5,
+        InkWell(
+          onTap: () => print("${lastGames[i]}"),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+              borderRadius: BorderRadius.circular(5),
             ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height * 0.001,
-          ),
-          child: Row(
-            children: [
-              Text(
-                lastGames[i]["userGameInformations"]['win'] == true
-                    ? "Victory"
-                    : "Defeat",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 10,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                ),
-                child: CachedNetworkImage(
-                  imageUrl:
-                      "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${lastGames[i]["userGameInformations"]['championName']}.png",
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.064,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  placeholder: (
-                    context,
-                    url,
-                  ) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (
-                    context,
-                    url,
-                    error,
-                  ) =>
-                      const Icon(
-                    Icons.error,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height * 0.001,
+            ),
+            child: Row(
+              children: [
+                Text(
+                  lastGames[i]["userGameInformations"]['win'] == true
+                      ? "Victory"
+                      : "Defeat",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: 10,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${lastGames[i]["userGameInformations"]['championName']}.png",
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: MediaQuery.of(context).size.width * 0.1,
+                      height: MediaQuery.of(context).size.height * 0.064,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (
+                      context,
+                      url,
+                    ) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (
+                      context,
+                      url,
+                      error,
+                    ) =>
+                        const Icon(
+                      Icons.error,
+                    ),
+                  ),
                 ),
-              ),
-              // show game informations
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lastGames[i]["userGameInformations"]['championName'],
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
+                const Padding(
+                  padding: EdgeInsets.only(
+                    left: 10,
+                  ),
+                ),
+                // show game informations
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lastGames[i]["userGameInformations"]['championName'],
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    Text(
-                      lastGames[i]["userGameInformations"]['kills'].toString() +
-                          " / " +
-                          lastGames[i]["userGameInformations"]['deaths']
-                              .toString() +
-                          " / " +
-                          lastGames[i]["userGameInformations"]['assists']
-                              .toString(),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
+                      Text(
+                        lastGames[i]["userGameInformations"]['kills']
+                                .toString() +
+                            " / " +
+                            lastGames[i]["userGameInformations"]['deaths']
+                                .toString() +
+                            " / " +
+                            lastGames[i]["userGameInformations"]['assists']
+                                .toString(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    // show all the items
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: Row(
-                        children: [
-                          ...lastGames[i]["userGameInformations"]['items'].map(
-                            (item) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.06,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.034,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                        "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/item/${item}.png"),
-                                    fit: BoxFit.cover,
+                      // show all the items
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Row(
+                          children: [
+                            ...lastGames[i]["userGameInformations"]['items']
+                                .map(
+                              (item) {
+                                return Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.06,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.034,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/item/${item}.png"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 0.3,
+                                    ),
                                   ),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 0.3,
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        ],
+                                );
+                              },
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.15,
-                // show the game type (Normal, Solo, Flex, ARAM)
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // show the game duration in minutes and seconds (time is given in seconds)
-                    Text(
-                      (lastGames[i]['gameDuration'] / 60).floor().toString() +
-                          ":" +
-                          ((lastGames[i]['gameDuration'] / 60 -
-                                      (lastGames[i]['gameDuration'] / 60)
-                                          .floor()) *
-                                  60)
-                              .floor()
-                              .toString()
-                              .padLeft(2, '0'),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  // show the game type (Normal, Solo, Flex, ARAM)
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // show the game duration in minutes and seconds (time is given in seconds)
+                      Text(
+                        (lastGames[i]['gameDuration'] / 60).floor().toString() +
+                            ":" +
+                            ((lastGames[i]['gameDuration'] / 60 -
+                                        (lastGames[i]['gameDuration'] / 60)
+                                            .floor()) *
+                                    60)
+                                .floor()
+                                .toString()
+                                .padLeft(2, '0'),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    Text(
-                      lastGames[i]['gameMode'],
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
+                      Text(
+                        lastGames[i]['gameMode'],
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    // show the date of the game (date is given in seconds unix time) gameCreation
-                    Text(
-                      DateTime.fromMillisecondsSinceEpoch(
-                              lastGames[i]['gameCreation'])
-                          .toString()
-                          .substring(0, 10),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
+                      // show the date of the game (date is given in seconds unix time) gameCreation
+                      Text(
+                        DateTime.fromMillisecondsSinceEpoch(
+                                lastGames[i]['gameCreation'])
+                            .toString()
+                            .substring(0, 10),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
