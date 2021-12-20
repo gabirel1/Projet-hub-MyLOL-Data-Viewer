@@ -105,6 +105,7 @@ class APIProfile {
                   "championName": body['info']['participants'][j]
                       ['championName'],
                   "championId": body['info']['participants'][j]['championId'],
+                  "items": [],
                   "item0": body['info']['participants'][j]['item0'],
                   "item1": body['info']['participants'][j]['item1'],
                   "item2": body['info']['participants'][j]['item2'],
@@ -116,6 +117,20 @@ class APIProfile {
                   "summoner1Id": body['info']['participants'][j]['summoner1Id'],
                   "summoner2Id": body['info']['participants'][j]['summoner2Id'],
                 };
+                userGameInformations['items']
+                    .add(userGameInformations['item0']);
+                userGameInformations['items']
+                    .add(userGameInformations['item1']);
+                userGameInformations['items']
+                    .add(userGameInformations['item2']);
+                userGameInformations['items']
+                    .add(userGameInformations['item3']);
+                userGameInformations['items']
+                    .add(userGameInformations['item4']);
+                userGameInformations['items']
+                    .add(userGameInformations['item5']);
+                userGameInformations['items']
+                    .add(userGameInformations['item6']);
                 break;
               }
             }

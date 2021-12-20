@@ -41,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
   List<dynamic> championsInformations = [];
   List<Widget> championsMasteriesWidgets = [];
   List<dynamic> lastGames = [];
+  List<Widget> lastGamesWidgets = [];
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
         championsInformations = apiProfile.getChampionsInformations();
         lastGames = apiProfile.getGamesInformations();
         buildChampionMasteriesWidget();
+        buildLastGamesWidget();
         isLoading = false;
       },
     );
@@ -146,23 +148,218 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget championsMasteries() {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.47,
-        height: MediaQuery.of(context).size.height * 0.07,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(5),
+      width: MediaQuery.of(context).size.width * 0.47,
+      height: MediaQuery.of(context).size.height * 0.07,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 2,
         ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            ...championsMasteriesWidgets,
+          ],
+        ),
+      ),
+    );
+  }
+
+  void buildLastGamesWidget() {
+    for (int i = 0; i < lastGames.length; i++) {
+      lastGamesWidgets.add(
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey,
+              width: 0.5,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.001,
+          ),
           child: Row(
             children: [
-              ...championsMasteriesWidgets,
+              Text(
+                lastGames[i]["userGameInformations"]['win'] == true
+                    ? "Victory"
+                    : "Defeat",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${lastGames[i]["userGameInformations"]['championName']}.png",
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.064,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (
+                    context,
+                    url,
+                  ) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (
+                    context,
+                    url,
+                    error,
+                  ) =>
+                      const Icon(
+                    Icons.error,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+              ),
+              // show game informations
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lastGames[i]["userGameInformations"]['championName'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      lastGames[i]["userGameInformations"]['kills'].toString() +
+                          " / " +
+                          lastGames[i]["userGameInformations"]['deaths']
+                              .toString() +
+                          " / " +
+                          lastGames[i]["userGameInformations"]['assists']
+                              .toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                    // show all the items
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Row(
+                        children: [
+                          ...lastGames[i]["userGameInformations"]['items'].map(
+                            (item) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.06,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.034,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                        "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/item/${item}.png"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 0.3,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.15,
+                // show the game type (Normal, Solo, Flex, ARAM)
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // show the game duration in minutes and seconds (time is given in seconds)
+                    Text(
+                      (lastGames[i]['gameDuration'] / 60).floor().toString() +
+                          ":" +
+                          ((lastGames[i]['gameDuration'] / 60 -
+                                      (lastGames[i]['gameDuration'] / 60)
+                                          .floor()) *
+                                  60)
+                              .floor()
+                              .toString()
+                              .padLeft(2, '0'),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      lastGames[i]['gameMode'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                    // show the date of the game (date is given in seconds unix time) gameCreation
+                    Text(
+                      DateTime.fromMillisecondsSinceEpoch(
+                              lastGames[i]['gameCreation'])
+                          .toString()
+                          .substring(0, 10),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ));
+        ),
+      );
+    }
+  }
+
+  Widget lastGamesList() {
+    return Container(
+      margin: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width * 0.05,
+      ),
+      width: MediaQuery.of(context).size.width * 0.90,
+      height: MediaQuery.of(context).size.height * 0.47,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            ...lastGamesWidgets,
+          ],
+        ),
+      ),
+    );
   }
 
   Widget queuesInformations() {
@@ -189,87 +386,89 @@ class _ProfilePageState extends State<ProfilePage> {
             width: MediaQuery.of(context).size.width * 0.68,
             child: Column(
               children: [
-                Stack(
-                  children: [
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          soloIconURL,
-                          width: 50,
-                          height: 50,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
+                Container(
+                  child: Stack(
+                    children: [
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            soloIconURL,
+                            width: 50,
+                            height: 50,
                           ),
-                        ),
-                        const Text(
-                          "Solo Ranked Match",
-                          style: TextStyle(
-                            color: Colors.blue,
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              left: 10,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            top: 55,
-                            left: 60,
+                          const Text(
+                            "Solo Ranked Match",
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
                           ),
-                        ),
-                        Text(
-                          soloRanking,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              top: 55,
+                              left: 60,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            top: 90,
-                            left: 60,
+                          Text(
+                            soloRanking,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                        Text(
-                          soloLPs,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              top: 90,
+                              left: 60,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            top: 125,
-                            left: 60,
+                          Text(
+                            soloLPs,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
-                        Text(
-                          soloWinLooses,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              top: 125,
+                              left: 60,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                )
+                          Text(
+                            soloWinLooses,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -482,6 +681,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   queuesInformations(),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: 20,
+                    ),
+                  ),
+                  lastGamesList(),
                 ],
               ),
       ),
