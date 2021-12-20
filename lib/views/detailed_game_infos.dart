@@ -30,8 +30,7 @@ class DetailedGameInfo extends StatefulWidget {
 }
 
 class _DetailedGameInfoState extends State<DetailedGameInfo> {
-  List<dynamic> _gameInformation = [];
-  List<Widget> _gameInformationWidgets = [];
+  var _gameInformation;
   List<dynamic> _playerInformations = [];
   List<Widget> _playerInformationsWidgets = [];
 
@@ -48,6 +47,7 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
     setState(() {
       _gameInformation = api.getGameInformation();
       _playerInformations = api.getPlayersInformations();
+      print(_playerInformations);
     });
     buildPlayerInformations();
     isLoading = false;
@@ -58,10 +58,10 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
       if (_playerInformations[i]['win'] == true) {
         _playerInformationsWidgets.add(
           Container(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.height * 0.1,
             decoration: BoxDecoration(
-              color: Colors.green,
+              // color: Colors.green,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
@@ -70,8 +70,8 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                 Text(
                   _playerInformations[i]['summonerName'],
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+                    color: Colors.black,
+                    fontSize: 12,
                   ),
                 ),
                 Padding(
@@ -82,8 +82,8 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                     imageUrl:
                         "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${_playerInformations[i]['championName']}.png",
                     imageBuilder: (context, imageProvider) => Container(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      height: MediaQuery.of(context).size.height * 0.064,
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.072,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: imageProvider,
@@ -108,7 +108,7 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                    left: 10,
+                    left: 5,
                   ),
                 ),
                 // show game informations
@@ -174,10 +174,10 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
       }
     }
     _playerInformationsWidgets.add(Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.05,
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
     ));
@@ -185,10 +185,10 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
       if (_playerInformations[i]['win'] == false) {
         _playerInformationsWidgets.add(
           Container(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.height * 0.1,
             decoration: BoxDecoration(
-              color: Colors.green,
+              // color: Colors.green,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
@@ -197,8 +197,8 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                 Text(
                   _playerInformations[i]['summonerName'],
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+                    color: Colors.black,
+                    fontSize: 12,
                   ),
                 ),
                 Padding(
@@ -209,8 +209,8 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                     imageUrl:
                         "https://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/${_playerInformations[i]['championName']}.png",
                     imageBuilder: (context, imageProvider) => Container(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      height: MediaQuery.of(context).size.height * 0.064,
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.072,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: imageProvider,
@@ -235,7 +235,7 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                    left: 10,
+                    left: 5,
                   ),
                 ),
                 // show game informations
@@ -305,17 +305,17 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
   Widget playersInfos() {
     return Container(
       margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
+        left: MediaQuery.of(context).size.width * 0.025,
       ),
-      width: MediaQuery.of(context).size.width * 0.90,
-      height: MediaQuery.of(context).size.height * 0.47,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.67,
+      // decoration: BoxDecoration(
+      //   border: Border.all(
+      //     color: Colors.grey,
+      //     width: 2,
+      //   ),
+      //   borderRadius: BorderRadius.circular(5),
+      // ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -340,15 +340,51 @@ class _DetailedGameInfoState extends State<DetailedGameInfo> {
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: [
-                  const Text(
-                    "Solo Leaderboard",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 10.0),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        Text(
+                          "${_gameInformation['gameMode']}",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          DateTime.fromMillisecondsSinceEpoch(
+                                  _gameInformation['gameCreation'])
+                              .toString()
+                              .substring(0, 10),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          (_gameInformation['gameDuration'] / 60)
+                                  .floor()
+                                  .toString() +
+                              ":" +
+                              ((_gameInformation['gameDuration'] / 60 -
+                                          (_gameInformation['gameDuration'] /
+                                                  60)
+                                              .floor()) *
+                                      60)
+                                  .floor()
+                                  .toString()
+                                  .padLeft(2, '0'),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   playersInfos(),
                 ],

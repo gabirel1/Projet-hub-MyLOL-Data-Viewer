@@ -38,9 +38,9 @@ class APIDetailedGamesInfo {
             "item4": body['info']['participants'][j]['item4'],
             "item5": body['info']['participants'][j]['item5'],
             "item6": body['info']['participants'][j]['item6'],
-            "kills": body['info']['participants'][j]['stats']['kills'],
-            "deaths": body['info']['participants'][j]['stats']['deaths'],
-            "assists": body['info']['participants'][j]['stats']['assists'],
+            "kills": body['info']['participants'][j]['kills'],
+            "deaths": body['info']['participants'][j]['deaths'],
+            "assists": body['info']['participants'][j]['assists'],
             "win": body['info']['participants'][j]['win'],
           });
           playersInformations[j]["items"].add(playersInformations[j]['item0']);
@@ -63,7 +63,7 @@ class APIDetailedGamesInfo {
     return gameInformation;
   }
 
-  getPlayersInformations() {
+  List<dynamic> getPlayersInformations() {
     return playersInformations;
   }
 }
